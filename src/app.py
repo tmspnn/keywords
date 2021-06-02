@@ -7,6 +7,12 @@ import hanlp
 HanLP = hanlp.load(
     hanlp.pretrained.mtl.CLOSE_TOK_POS_NER_SRL_DEP_SDP_CON_ELECTRA_SMALL_ZH)
 
+tok = HanLP["tok/fine"]
+
+tok.dict_force = {
+    "和服务": ["和", "服务"]
+}
+
 
 class Resource:
     def on_get(self, req, res):
