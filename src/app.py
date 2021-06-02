@@ -1,7 +1,6 @@
 from wsgiref.simple_server import make_server
 from hanlp.utils.rules import split_sentence
 
-import os
 import falcon
 import hanlp
 
@@ -16,7 +15,7 @@ class Resource:
 
     def on_post(self, req, res):
         sentences = split_sentence(req.media.get("texts"))
-        result = HanLP(sentences)
+        result = HanLP(sentences, tasks="tok")
         res.media = result
 
 
@@ -27,7 +26,7 @@ resource = Resource()
 app.add_route("/", resource)
 
 if __name__ == "__main__":
-    PORT = os.getenv("PORT") or 23333
-    with make_server("", PORT, app) as httpd:
-        print("Serving on %s 8000..." % PORT)
+    port = 8000
+    with make_server("", port, app) as httpd:
+        print("Serving on %s..." % port)
         httpd.serve_forever()
