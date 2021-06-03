@@ -1,35 +1,25 @@
-from wsgiref.simple_server import make_server
-from hanlp.utils.rules import split_sentence
-
 import falcon
 import hanlp
+
+from wsgiref.simple_server import make_server
+
+from resources.RootResource import RootResource
+from resources.TokResource import TokResource
+from dict.dict_force import dict_force
 
 HanLP = hanlp.load(
     hanlp.pretrained.mtl.CLOSE_TOK_POS_NER_SRL_DEP_SDP_CON_ELECTRA_SMALL_ZH)
 
-tok = HanLP["tok/fine"]
-
-tok.dict_force = {
-    "和服务": ["和", "服务"]
-}
-
-
-class Resource:
-    def on_get(self, req, res):
-        res.status = falcon.HTTP_200
-        res.media = {"service": "NLP"}
-
-    def on_post(self, req, res):
-        sentences = split_sentence(req.media.get("texts"))
-        result = HanLP(sentences, tasks="tok")
-        res.media = result
+HanLP["tok/fine"].dict_force = dict_force
 
 
 app = falcon.App()
 
-resource = Resource()
+root_resource = RootResource()
+tok_resource = TokResource(HanLP)
 
-app.add_route("/", resource)
+app.add_route("/", root_resource)
+app.add_route("/tokenization", tok_resource)
 
 if __name__ == "__main__":
     port = 8000
