@@ -6,13 +6,13 @@ class TokResource:
         self.HanLP = HanLP
 
     def on_post(self, req, res):
-        texts = req.media.get("texts")
+        text = req.media.get("text")
         result = {}
 
-        if isinstance(texts, str):
-            sentences = split_sentence(texts)
+        if isinstance(text, str):
+            sentences = split_sentence(text)
             result = self.HanLP(sentences, tasks="tok")
-        elif isinstance(texts, list):
-            result = self.HanLP(texts, tasks="tok")
+        elif isinstance(text, list):
+            result = self.HanLP(text, tasks="tok")
 
         res.media = result
