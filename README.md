@@ -1,2 +1,7 @@
 # keywords
-Extract keywords from an article or a sentence, using HanLP.
+
+NLP system of tmspnn.com
+
+Currently provides only a tokenization API using HanLP.
+
+TBC...
