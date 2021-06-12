@@ -1,9 +1,9 @@
 # syntax=docker/dockerfile:1
-FROM python:3.8-slim-buster
+FROM python:latest
 
 WORKDIR /app
 COPY . .
-RUN python3 -m pip install -r requirements.txt
+RUN bash install.sh
 
 EXPOSE 8000
-CMD ["python3", "src/app.py"]
+CMD ["python", "src/app.py"]
